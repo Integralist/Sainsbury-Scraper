@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
+	"strings"
 	"sync"
 
 	"github.com/PuerkitoBio/goquery"
@@ -70,8 +71,8 @@ func getItem(url string) {
 
 	item.Title = doc.Find("h1").Text()
 	item.UnitPrice = extractPrice(doc.Find(".pricePerUnit").Text())
-	item.Size = doc.Find(".productText").Eq(3).Text()
-	item.Description = doc.Find(".productText").First().Text()
+	item.Size = strings.TrimSpace(doc.Find(".productText").Eq(3).Text())
+	item.Description = strings.TrimSpace(doc.Find(".productText").First().Text())
 
 	ch <- item
 }
