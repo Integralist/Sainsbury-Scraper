@@ -49,7 +49,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		b, err := json.Marshal(s.Scrape(coll))
+		b, err := json.MarshalIndent(s.Scrape(coll), "", "    ")
 		if err != nil {
 			fmt.Printf("There was an issue converting our data into JSON: %s", err.Error())
 			os.Exit(1)
