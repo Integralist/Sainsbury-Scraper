@@ -26,15 +26,9 @@ go test -v ./...
 
 ## Architecture
 
-<small><u>Time spent</u>: 20 minutes</small>
-
-&lt;insert diagram&gt;
-
-> This includes considering my solution as well as writing up this README
+![Architecture](https://cloud.githubusercontent.com/assets/180050/11756388/72c1d13a-a051-11e5-860c-7a30bf3e3b49.png)
 
 ## Development
-
-<small><u>Time spent</u>: ? minutes</small>
 
 1. Read-Me Driven Development
 2. Create CLI structure
