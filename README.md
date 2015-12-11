@@ -120,5 +120,4 @@ The scraper should return a Struct with a key of `results` which is assigned an 
 If the code needs to be made more *reusable*, then we could also look to inject the Array of 'filters' rather than hardcode them. This would allow the package to be reused on different page types.
 
 > Note:
-> 
-> I use a multitude of filters such as `h1`, `.pricePerUnit` and `productText`. The last selector isn't very flexible though. I would've used a selector such as `nth-child` but it made the code harder to reason about and so I opted against it.
+> I use a multitude of filters such as `h1`, `.pricePerUnit`, `productText` and `productDataItemHeader`.
