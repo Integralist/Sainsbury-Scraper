@@ -1,11 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
 	"github.com/codegangsta/cli"
 	r "github.com/integralist/sainsbury-scraper/retriever"
+	s "github.com/integralist/sainsbury-scraper/scraper"
 )
 
 const url = "http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html"
@@ -41,7 +43,19 @@ func main() {
 	app.Usage = "CLI tool for scraping contents from Sainsbury website"
 
 	app.Action = func(c *cli.Context) {
-		fmt.Println(r.Retrieve(url))
+		coll, err := r.Retrieve(url)
+		if err != nil {
+			fmt.Printf("There was an issue retrieving links from the page: %s", err.Error())
+			os.Exit(1)
+		}
+
+		b, err := json.Marshal(s.Scrape(coll))
+		if err != nil {
+			fmt.Printf("There was an issue converting our data into JSON: %s", err.Error())
+			os.Exit(1)
+		}
+
+		fmt.Println(string(b))
 	}
 
 	app.CommandNotFound = commandNotFound
