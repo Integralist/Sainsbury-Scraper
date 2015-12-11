@@ -57,7 +57,7 @@ func Scrape(urls []string) Result {
 	return result
 }
 
-func getItem(url string) {
+var getItem = func(url string) {
 	defer wg.Done()
 
 	doc, err := goquery.NewDocument(url)
