@@ -41,23 +41,24 @@ func main() {
 	app.Version = "0.0.1"
 	app.Authors = authors()
 	app.Usage = "CLI tool for scraping contents from Sainsbury website"
-
-	app.Action = func(c *cli.Context) {
-		coll, err := r.Retrieve(url)
-		if err != nil {
-			fmt.Printf("There was an issue retrieving links from the page: %s", err.Error())
-			os.Exit(1)
-		}
-
-		b, err := json.MarshalIndent(s.Scrape(coll), "", "    ")
-		if err != nil {
-			fmt.Printf("There was an issue converting our data into JSON: %s", err.Error())
-			os.Exit(1)
-		}
-
-		fmt.Println(string(b))
-	}
+	app.Action = process
 
 	app.CommandNotFound = commandNotFound
 	app.Run(os.Args)
+}
+
+func process(c *cli.Context) {
+	coll, err := r.Retrieve(url)
+	if err != nil {
+		fmt.Printf("There was an issue retrieving links from the page: %s", err.Error())
+		os.Exit(1)
+	}
+
+	b, err := json.MarshalIndent(s.Scrape(coll), "", "    ")
+	if err != nil {
+		fmt.Printf("There was an issue converting our data into JSON: %s", err.Error())
+		os.Exit(1)
+	}
+
+	fmt.Println(string(b))
 }
