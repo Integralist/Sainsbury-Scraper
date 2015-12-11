@@ -41,7 +41,6 @@ go test -v ./...
 3. Define entry command
 4. Define 'retriever' package
 5. Define 'scraper' package
-6. Define 'utilities' package
 
 ### Retriever
 
@@ -80,17 +79,17 @@ The scraper should return a Struct with a key of `results` which is assigned an 
     {
       "title":"Sainsbury's Avocado, Ripe & Ready x2",
       "size": "90.6kb",
-      "unit_price": 1.80,
+      "unit_price": "1.80",
       "description": "Great to eat now - refrigerate at home 1 of 5 a day 1 avocado counts as 1 of your 5..."
     }, 
     {
       "title":"Sainsbury's Avocado, Ripe & Ready x4",
       "size": "87kb",
-      "unit_price": 2.00,
+      "unitPrice": "2.00",
       "description": "Great to eat now - refrigerate at home 1 of 5 a day 1 avocado counts as 1 of your 5..."
     }
   ],
-  "total": 3.80
+  "total": "3.80"
 }
 ```
 
@@ -101,7 +100,3 @@ If the code needs to be made more *reusable*, then we could also look to inject 
 > I use a multitude of filters such as `h1`, `.pricePerUnit` and `productText`. The last selector isn't very flexible though. I would've used a selector such as `nth-child` but it made the code harder to reason about and so I opted against it.
 > 
 > Also, if the order of the page changes, then a more robust solution would be to inspect the text at each `productDataItemHeader` element and if a match is made we know we can extract the content that follows it
-
-### Utilities
-
-The utilities package is consumed by the Scraper and is expected to provide utility functions to any other packages
