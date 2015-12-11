@@ -64,26 +64,56 @@ The scraper should be passed an Array of URLs (see above for example) so it can 
 - Product description
 - Product size
 
-The scraper should return a Struct with a key of `results` which is assigned an Array of the details collated details and a key of `total` which details the total cost, like so:
+The scraper should return a Struct with a key of `results` which is assigned an Array of collated details and a key of `total` which details the total cost. Once it's converted to JSON it'll look something like:
 
 
 ```json
 {
-  "results": [
-    {
-      "title":"Sainsbury's Avocado, Ripe & Ready x2",
-      "size": "90.6kb",
-      "unit_price": "1.80",
-      "description": "Great to eat now - refrigerate at home 1 of 5 a day 1 avocado counts as 1 of your 5..."
-    }, 
-    {
-      "title":"Sainsbury's Avocado, Ripe & Ready x4",
-      "size": "87kb",
-      "unitPrice": "2.00",
-      "description": "Great to eat now - refrigerate at home 1 of 5 a day 1 avocado counts as 1 of your 5..."
-    }
-  ],
-  "total": "3.80"
+    "results": [
+        {
+            "title": "Sainsbury's Apricot Ripe \u0026 Ready x5",
+            "size": "5Count",
+            "unitPrice": "3.50",
+            "description": "Apricots"
+        },
+        {
+            "title": "Sainsbury's Avocado Ripe \u0026 Ready XL Loose 300g",
+            "size": "275g",
+            "unitPrice": "1.50",
+            "description": "Avocados"
+        },
+        {
+            "title": "Sainsbury's Avocado, Ripe \u0026 Ready x2",
+            "size": "2Count",
+            "unitPrice": "1.80",
+            "description": "Avocados"
+        },
+        {
+            "title": "Sainsbury's Avocados, Ripe \u0026 Ready x4",
+            "size": "x4Count",
+            "unitPrice": "3.20",
+            "description": "Avocados"
+        },
+        {
+            "title": "Sainsbury's Conference Pears, Ripe \u0026 Ready x4 (minimum)",
+            "size": "4Count",
+            "unitPrice": "1.50",
+            "description": "Conference"
+        },
+        {
+            "title": "Sainsbury's Golden Kiwi x4",
+            "size": "x4",
+            "unitPrice": "1.80",
+            "description": "Gold Kiwi"
+        },
+        {
+            "title": "Sainsbury's Kiwi Fruit, Ripe \u0026 Ready x4",
+            "size": "x4",
+            "unitPrice": "1.80",
+            "description": "Kiwi"
+        }
+    ],
+    "total": "15.10"
 }
 ```
 
@@ -92,5 +122,3 @@ If the code needs to be made more *reusable*, then we could also look to inject 
 > Note:
 > 
 > I use a multitude of filters such as `h1`, `.pricePerUnit` and `productText`. The last selector isn't very flexible though. I would've used a selector such as `nth-child` but it made the code harder to reason about and so I opted against it.
-> 
-> Also, if the order of the page changes, then a more robust solution would be to inspect the text at each `productDataItemHeader` element and if a match is made we know we can extract the content that follows it

@@ -20,7 +20,7 @@ type Item struct {
 
 // Result stores details of the scraped products
 type Result struct {
-	Items []Item `json:"items"`
+	Items []Item `json:"results"`
 	Total string `json:"total"`
 }
 
@@ -71,8 +71,13 @@ func getItem(url string) {
 
 	item.Title = doc.Find("h1").Text()
 	item.UnitPrice = extractPrice(doc.Find(".pricePerUnit").Text())
-	item.Size = strings.TrimSpace(doc.Find(".productText").Eq(3).Text())
 	item.Description = strings.TrimSpace(doc.Find(".productText").First().Text())
+
+	doc.Find(".productDataItemHeader").Each(func(i int, s *goquery.Selection) {
+		if s.Text() == "Size" {
+			item.Size = strings.TrimSpace(s.Next().Text())
+		}
+	})
 
 	ch <- item
 }
