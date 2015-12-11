@@ -5,7 +5,10 @@ import (
 	"os"
 
 	"github.com/codegangsta/cli"
+	r "github.com/integralist/sainsbury-scraper/retriever"
 )
+
+const url = "http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html"
 
 var authorList []cli.Author
 
@@ -38,7 +41,7 @@ func main() {
 	app.Usage = "CLI tool for scraping contents from Sainsbury website"
 
 	app.Action = func(c *cli.Context) {
-		fmt.Println("do something")
+		fmt.Println(r.Retrieve(url))
 	}
 
 	app.CommandNotFound = commandNotFound
