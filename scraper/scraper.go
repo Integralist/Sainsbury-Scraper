@@ -1,7 +1,10 @@
 package scraper
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
@@ -36,6 +39,11 @@ func (r *Result) calculate() {
 	r.Total = fmt.Sprintf("%.2f", total)
 }
 
+type wrappedDocument struct {
+	Size     string
+	Document *goquery.Document
+}
+
 var ch chan Item
 var wg sync.WaitGroup
 
@@ -57,10 +65,33 @@ func Scrape(urls []string) Result {
 	return result
 }
 
+func extendDocument(url string) (wrappedDocument, error) {
+	res, err := http.Get(url)
+	if err != nil {
+		return wrappedDocument{}, err
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return wrappedDocument{}, err
+	}
+	size := strconv.Itoa(len(body)/1000) + "kb"
+
+	// Rewind response body so it can be re-read by goquery
+	res.Body = ioutil.NopCloser(bytes.NewReader(body))
+
+	doc, err := goquery.NewDocumentFromResponse(res)
+	if err != nil {
+		return wrappedDocument{}, err
+	}
+
+	return wrappedDocument{size, doc}, nil
+}
+
 var getItem = func(url string) {
 	defer wg.Done()
 
-	doc, err := goquery.NewDocument(url)
+	d, err := extendDocument(url)
 	if err != nil {
 		fmt.Println(
 			fmt.Errorf("Unable to create a new document: %s", err.Error()),
@@ -69,15 +100,10 @@ var getItem = func(url string) {
 
 	item := Item{}
 
-	item.Title = doc.Find("h1").Text()
-	item.UnitPrice = extractPrice(doc.Find(".pricePerUnit").Text())
-	item.Description = strings.TrimSpace(doc.Find(".productText").First().Text())
-
-	doc.Find(".productDataItemHeader").Each(func(i int, s *goquery.Selection) {
-		if s.Text() == "Size" {
-			item.Size = strings.TrimSpace(s.Next().Text())
-		}
-	})
+	item.Title = d.Document.Find("h1").Text()
+	item.UnitPrice = extractPrice(d.Document.Find(".pricePerUnit").Text())
+	item.Description = strings.TrimSpace(d.Document.Find(".productText").First().Text())
+	item.Size = d.Size
 
 	ch <- item
 }

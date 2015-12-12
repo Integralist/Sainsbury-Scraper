@@ -78,43 +78,43 @@ The scraper should return a Struct with a field of `Items` which is assigned an 
     "results": [
         {
             "title": "Sainsbury's Apricot Ripe \u0026 Ready x5",
-            "size": "5Count",
+            "size": "39kb",
             "unitPrice": "3.50",
             "description": "Apricots"
         },
         {
             "title": "Sainsbury's Avocado Ripe \u0026 Ready XL Loose 300g",
-            "size": "275g",
+            "size": "39kb",
             "unitPrice": "1.50",
             "description": "Avocados"
         },
         {
             "title": "Sainsbury's Avocado, Ripe \u0026 Ready x2",
-            "size": "2Count",
+            "size": "44kb",
             "unitPrice": "1.80",
             "description": "Avocados"
         },
         {
             "title": "Sainsbury's Avocados, Ripe \u0026 Ready x4",
-            "size": "x4Count",
+            "size": "39kb",
             "unitPrice": "3.20",
             "description": "Avocados"
         },
         {
             "title": "Sainsbury's Conference Pears, Ripe \u0026 Ready x4 (minimum)",
-            "size": "4Count",
+            "size": "39kb",
             "unitPrice": "1.50",
             "description": "Conference"
         },
         {
             "title": "Sainsbury's Golden Kiwi x4",
-            "size": "x4",
+            "size": "39kb",
             "unitPrice": "1.80",
             "description": "Gold Kiwi"
         },
         {
             "title": "Sainsbury's Kiwi Fruit, Ripe \u0026 Ready x4",
-            "size": "x4",
+            "size": "39kb",
             "unitPrice": "1.80",
             "description": "Kiwi"
         }
@@ -128,8 +128,9 @@ If the code needs to be made more *reusable*, then we could also look to inject 
 > Note:
 > I use a multitude of filters such as `h1`, `.pricePerUnit`, `productText` and `productDataItemHeader`.
 
-## Issues?
+## Additional comments
 
+- In order to fulfil the requirement for displaying the size of the HTML page being linked to, I needed to build decorator that mimic'ed an internal function from the goquery dependency. This allowed me to adapt an interface that was effectively the same but incorporated the additional requirement of calculating the response body size. This introduced an issue where by the response body needed to be read twice (once by my implementation and once again when passed to the goquery dependency) 
 - I wrote tests for the Scraper package and tried (with what time I had left) to write a test for the Retriever package, but due to how the goquery dependency library had been developed it made testing the package quite difficult (most of its method signatures utilised pointers to actual objects so I wasn't always able to swap out a concrete implementation with an interface). On top of that I realised I might have ended up trying to unit test the dependency rather than verifying expected behaviour of the Retriever package itself (which doesn't really do much other than utilise the goquery API).
 - I ended up spending a bit too much time trying to produce the price in the JSON object response as a float rather than a string. The issue I was having was with regards to floats rounding off the last zero (e.g. converting the string into a float would result in something like `15.10` being translated into `15.1`) which was misleading output I felt and so after trying quite a few work arounds, I had to settle on implementing it as a string type instead
 - Spent a bit of time investigating the Unicode code points being placed into the JSON output instead of the actual rune character being rendered (e.g. the Struct would show `&` but when marshaled into JSON it would be transformed into the code point `\u0026`). It seems that this is expected behaviour according to the Go documentation. If you paste the JSON output into a browser console then you'll find the code point is translated back to the actual rune character
