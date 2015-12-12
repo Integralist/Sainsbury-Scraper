@@ -10,7 +10,7 @@ import (
 	s "github.com/integralist/sainsbury-scraper/scraper"
 )
 
-const url = "http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html"
+const gateway = "http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html"
 
 func commandNotFound(c *cli.Context, command string) {
 	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.", c.App.Name, command, c.App.Name, c.App.Name)
@@ -30,7 +30,7 @@ func main() {
 }
 
 func process(c *cli.Context) {
-	coll, err := r.Retrieve(url)
+	coll, err := r.Retrieve(gateway)
 	if err != nil {
 		fmt.Printf("There was an issue retrieving links from the page: %s", err.Error())
 		os.Exit(1)
