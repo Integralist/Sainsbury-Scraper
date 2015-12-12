@@ -125,6 +125,10 @@ The scraper should return a Struct with a field of `Items` which is assigned an 
 }
 ```
 
+> Note:
+> Changed `unit_price` to `unitPrice` as it's more idiomatic of JavaScript/JSON  
+> snake_case is more a Ruby convention
+
 If the code needs to be made more *reusable*, then we could also look to inject the 'filters' rather than hardcode them. This would allow the package to be reused on different page types.
 
 > Note:
@@ -132,7 +136,7 @@ If the code needs to be made more *reusable*, then we could also look to inject 
 
 ## Commit History
 
-For the purposes of this quick test project I was committing straight to master (which in the real-world is a big no-no). At the BBC we have a specific git workflow for how we merge our PRs. Effectively we squash/rebase before cherry picking, while referencing issues/PRs allows us to close them dynamically upon push to master). [I've documented the workflow here](http://www.integralist.co.uk/posts/github-workflow.html))
+For the purposes of this quick test project I was committing straight to master (which in the real-world is a big no-no). At the BBC we have a specific git workflow for how we merge our PRs. Effectively we squash/rebase before cherry picking, while referencing issues/PRs allows us to close them dynamically upon push to master). [I've documented the workflow here](http://www.integralist.co.uk/posts/github-workflow.html)
 
 ## Additional comments
 
