@@ -23,24 +23,21 @@ func TestScrapeResults(t *testing.T) {
 	result := Scrape(urls)
 	first := result.Items[0]
 
-	if expected := "FooTitle"; first.Title != expected {
-		err(first.Title, expected, t)
+	var suite = []struct {
+		response string
+		expected string
+	}{
+		{first.Title, "FooTitle"},
+		{first.Size, "FooSize"},
+		{first.UnitPrice, "10.00"},
+		{first.Description, "FooDescription"},
+		{result.Total, "30.00"},
 	}
 
-	if expected := "FooSize"; first.Size != expected {
-		err(first.Size, expected, t)
-	}
-
-	if expected := "10.00"; first.UnitPrice != expected {
-		err(first.UnitPrice, expected, t)
-	}
-
-	if expected := "FooDescription"; first.Description != expected {
-		err(first.Description, expected, t)
-	}
-
-	if expected := "30.00"; result.Total != expected {
-		err(result.Total, expected, t)
+	for _, v := range suite {
+		if v.response != v.expected {
+			err(v.response, v.expected, t)
+		}
 	}
 }
 
