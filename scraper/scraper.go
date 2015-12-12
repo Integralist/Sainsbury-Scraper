@@ -39,7 +39,7 @@ func (r *Result) calculate() {
 	r.Total = fmt.Sprintf("%.2f", total)
 }
 
-type wrappedDocument struct {
+type extendedDocument struct {
 	Size     string
 	Document *goquery.Document
 }
@@ -65,15 +65,15 @@ func Scrape(urls []string) Result {
 	return result
 }
 
-func extendDocument(url string) (wrappedDocument, error) {
+func extendDocument(url string) (extendedDocument, error) {
 	res, err := http.Get(url)
 	if err != nil {
-		return wrappedDocument{}, err
+		return extendedDocument{}, err
 	}
 
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return wrappedDocument{}, err
+		return extendedDocument{}, err
 	}
 	size := strconv.Itoa(len(body)/1000) + "kb"
 
@@ -82,10 +82,10 @@ func extendDocument(url string) (wrappedDocument, error) {
 
 	doc, err := goquery.NewDocumentFromResponse(res)
 	if err != nil {
-		return wrappedDocument{}, err
+		return extendedDocument{}, err
 	}
 
-	return wrappedDocument{size, doc}, nil
+	return extendedDocument{size, doc}, nil
 }
 
 var getItem = func(url string) {
