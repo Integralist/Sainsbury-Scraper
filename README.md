@@ -34,6 +34,8 @@ The main dependency is [goquery](https://github.com/PuerkitoBio/goquery/) which 
 
 The other dependency is [codegangsta/cli](https://github.com/codegangsta/cli) which abstracts away a lot of the boilerplate required for creating a console based application
 
+> Note: I'm a big fan of Dave Cheney's [gb](https://getgb.io/) for managing vendored dependencies. Although the BBC prefers to use [Godep](https://godoc.org/github.com/tools/godep). I opted for neither as there were only two dependencies, and so it felt a little overkill for this small project. Once Go 1.6 is released hopefully we'll see an official/native implementation for vendored dependencies
+
 ## Development
 
 1. Read-Me Driven Development
