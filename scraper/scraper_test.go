@@ -2,7 +2,7 @@ package scraper
 
 import "testing"
 
-func TestScrape(t *testing.T) {
+func TestScrapeResultsTotal(t *testing.T) {
 	getItem = func(url string) {
 		defer wg.Done()
 
