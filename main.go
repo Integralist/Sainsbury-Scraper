@@ -12,11 +12,6 @@ import (
 
 const gateway = "http://hiring-tests.s3-website-eu-west-1.amazonaws.com/2015_Developer_Scrape/5_products.html"
 
-func commandNotFound(c *cli.Context, command string) {
-	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.", c.App.Name, command, c.App.Name, c.App.Name)
-	os.Exit(2)
-}
-
 func main() {
 	app := cli.NewApp()
 	app.Name = "Sainsbury Scraper"
@@ -43,4 +38,9 @@ func process(c *cli.Context) {
 	}
 
 	fmt.Println(string(b))
+}
+
+func commandNotFound(c *cli.Context, command string) {
+	fmt.Fprintf(os.Stderr, "%s: '%s' is not a %s command. See '%s --help'.", c.App.Name, command, c.App.Name, c.App.Name)
+	os.Exit(2)
 }
