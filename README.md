@@ -46,7 +46,7 @@ The other dependency is [codegangsta/cli](https://github.com/codegangsta/cli) wh
 
 ### Retriever
 
-The retriever should be handed a URL and return an Array of sub page resource URLs, like so:
+The retriever should be handed a URL and return a Slice of sub page resource URLs, like so:
 
 ```json
 [
