@@ -11,17 +11,11 @@ import (
 )
 
 const href = "http://bar.com/"
+const url = "http://foo.com/"
+
+var body string
 
 func fakeNewDocument(url string) (*goquery.Document, error) {
-	body := `
-		<html>
-			<body>
-				<div class="productInfo">
-					<a href="{}">Bar</a>
-				</div>
-			</body>
-		<html>
-	`
 	body = strings.Replace(body, "{}", href, 1)
 
 	resp := &http.Response{
@@ -39,11 +33,37 @@ func fakeNewDocument(url string) (*goquery.Document, error) {
 }
 
 func TestRetrieveReturnValue(t *testing.T) {
-	url := "http://foo.com/"
-
+	// {} interpolated with constant's value
+	body = `
+		<html>
+			<body>
+				<div class="productInfo">
+					<a href="{}">Bar</a>
+				</div>
+			</body>
+		<html>
+	`
 	coll, _ := Retrieve(url, fakeNewDocument)
 
 	if response := coll[0]; response != href {
 		t.Errorf("The response:\n '%s'\ndidn't match the expectation:\n '%s'", response, href)
+	}
+}
+
+func TestRetrieveMissingAttributeReturnsEmptySlice(t *testing.T) {
+	// href attribute is missing from anchor element
+	body = `
+		<html>
+			<body>
+				<div class="productInfo">
+					<a>Bar</a>
+				</div>
+			</body>
+		<html>
+	`
+	coll, _ := Retrieve(url, fakeNewDocument)
+
+	if response := coll; len(response) > 0 {
+		t.Errorf("The response:\n '%s'\ndidn't match the expectation:\n '%s'", response, "[http://bar.com/]")
 	}
 }
