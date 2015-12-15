@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/PuerkitoBio/goquery"
 	"github.com/codegangsta/cli"
 	r "github.com/integralist/sainsbury-scraper/retriever"
 	s "github.com/integralist/sainsbury-scraper/scraper"
@@ -25,7 +26,7 @@ func main() {
 }
 
 func process(c *cli.Context) {
-	coll, err := r.Retrieve(gateway)
+	coll, err := r.Retrieve(gateway, goquery.NewDocument)
 	if err != nil {
 		fmt.Printf("There was an issue retrieving links from the page: %s", err.Error())
 		os.Exit(1)
