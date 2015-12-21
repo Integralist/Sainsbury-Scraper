@@ -8,7 +8,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-	"sync"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -45,7 +44,6 @@ type extendedDocument struct {
 }
 
 var ch chan Item
-var wg sync.WaitGroup
 
 // Scrape function parses provided URL for product links
 func Scrape(urls []string) Result {
@@ -54,11 +52,9 @@ func Scrape(urls []string) Result {
 	result := Result{}
 
 	for _, url := range urls {
-		wg.Add(1)
 		go getItem(url)
 		result.Items = append(result.Items, <-ch)
 	}
-	wg.Wait()
 
 	result.calculate()
 
@@ -89,8 +85,6 @@ func extendDocument(url string) (extendedDocument, error) {
 }
 
 var getItem = func(url string) {
-	defer wg.Done()
-
 	d, err := extendDocument(url)
 	if err != nil {
 		fmt.Println(

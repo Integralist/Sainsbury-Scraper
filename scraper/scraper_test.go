@@ -4,8 +4,6 @@ import "testing"
 
 func TestScrapeResults(t *testing.T) {
 	getItem = func(url string) {
-		defer wg.Done()
-
 		ch <- Item{
 			"FooTitle",
 			"FooSize",
